@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="jquery.json-viewer.css"
+          rel="stylesheet" type="text/css">
+</head>
+<style type="text/css">
+    #json-display {
+        margin: 2em 0;
+        padding: 8px 15px;
+        min-height: 300px;
+        background: #ffffff;
+        color: #ff0000;
+        font-size: 16px;
+        width: 100%;
+        border-color: #00000000;
+  		border:none;
+        line-height: 1.8;
+    }
+    #json-btn {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+  		width:100%;
+  		padding: 10;
+
+    }
+    #format_btn {
+  	    width: 50%;
+  	    height: 36px;
+    }
+    #save_btn {
+  	    width: 50%;
+  	    height: 36px;
+  	    margin-left: 4em;
+    }
+
+</style>
+<body>
+<div style="padding: 2px 2px 2px 2px;">
+    <div id="json-btn" class="json-btn">
+        <button type="button" id="format_btn" onclick="format_btn();">Format</button>
+        <button type="button" id="save_btn" onclick="save_btn();">Save</button>
+
+    </div>
+    <div>
+        <pre id="json-display" contenteditable="true"></pre>
+    </div>
+    <br>
+</div>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.json-viewer.js"></script>
+<script>
+
+    document.getElementById("json-display").addEventListener("input", function(){
+            console.log("json-display input");
+            json_parse.configContentChanged();
+        }, false);
+    function showJson(jsonObj){
+        $("#json-display").jsonViewer(jsonObj,{withQuotes: true});//format json and display
+    }
+    function format_btn() {
+        var my_json_val = $("#json-display").clone(false);
+        my_json_val.find("a.json-placeholder").remove();
+        var jsonval = my_json_val.text();
+        var jsonObj = JSON.parse(jsonval);   //parse string to json
+        $("#json-display").jsonViewer(jsonObj,{withQuotes: true});//format json and display
+    }
+
+
+    function save_btn() {
+        var my_json_val = $("#json-display").clone(false);
+        my_json_val.find("a.json-placeholder").remove();
+        var jsonval = my_json_val.text();
+        var saveFailed = false;
+        try {
+            var jsonObj = JSON.parse(jsonval); //parse
+        } catch (e) {
+            console.error(e.message);
+            saveFailed = true;
+            json_parse.parseJsonException(e.message); // throw exception
+        }
+        if(!saveFailed) {
+            json_parse.saveConfig(jsonval);
+        }
+    }
+
+</script>
+</body>
+</html>
