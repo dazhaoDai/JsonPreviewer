@@ -1,5 +1,5 @@
 ## A simple & light json previewer repository on android
-
+![](https://github.com/dazhaoDai/JsonPreviewer/blob/main/images/img.png)
 ### How to use
 1. import the assets to your project
 2. init Webview
